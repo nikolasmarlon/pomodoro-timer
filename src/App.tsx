@@ -7,10 +7,10 @@ export function App() {
 
   return (
     <>
-      <Button />
-      <Button />
-      <Button />
-      <Button />
+      <Button variantColor='primary' />
+      <Button variantColor='secondary' />
+      <Button variantColor='danger'/>
+      <Button variantColor='success'/>
       <Button />
     </>
   )
