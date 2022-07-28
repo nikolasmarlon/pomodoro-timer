@@ -18,10 +18,13 @@ export const ButtonContainer = styled.button<ButtonContainerProps>`
     height: 40px;
     color: white;
     margin: 0 2px;
-    border: none;
+    
+
+
+    background-color: ${props => props.theme.primary};
 
     //sempre usar acento grave
-    ${props => {
+    /*${props => {
         return css `background-color: ${buttonVariants[props.variantColor]}`
-    }}
+    }}*/
 `
