@@ -1,8 +1,6 @@
 import styled from 'styled-components'
 
 export const HomeContainer = styled.main`
-  background-color: #000009;
-
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -34,6 +32,9 @@ export const CountdownContainer = styled.div`
   line-height: 8rem;
   color: ${(props) => props.theme['gray-100']};
   display: flex;
+  width: 100%;
+  justify-content: space-between;
+
   gap: 1rem;
 
   span {
@@ -42,7 +43,6 @@ export const CountdownContainer = styled.div`
     border-radius: 8px;
   }
 `
-
 
 export const Separator = styled.div`
   padding: 2rem 0;
@@ -66,14 +66,14 @@ export const StartCountdownButton = styled.button`
   font-weight: bold;
   cursor: pointer;
 
-  background-color: ${props => props.theme['green-500']};
-  color: ${props => props.theme['gray-100']};
+  background-color: ${(props) => props.theme['green-500']};
+  color: ${(props) => props.theme['gray-100']};
 
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
   }
   &:not(:disabled)hover {
-    background-color: ${props => props.theme['green-700']};
-
+    background-color: ${(props) => props.theme['green-700']};
+  }
 `

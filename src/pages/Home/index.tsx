@@ -12,8 +12,9 @@ export function Home() {
     <HomeContainer>
       <form action="">
         <FormContainer>
-          <label htmlFor="task">Vou trabalhar em: </label>
-          <input required id="task" type="text" />
+          <label htmlFor="task">Vou trabalhar em:</label>
+          <input required id="task" />
+
           <label htmlFor="minutesAmount">durante</label>
           <input required id="minutesAmount" type="number" />
           <span>minutos.</span>
@@ -26,7 +27,7 @@ export function Home() {
           <span>0</span>
         </CountdownContainer>
 
-        <StartCountdownButton disabled type='submit' >
+        <StartCountdownButton disabled type="submit">
           <Play size={24} />
           Começar
         </StartCountdownButton>

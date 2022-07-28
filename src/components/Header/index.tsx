@@ -6,7 +6,7 @@ export function Header() {
   return (
     <HeaderContainer>
       <NavLink to="/">
-        <img src={logoIgnite} />
+        <img src={logoIgnite} alt="logo ignite" />
       </NavLink>
       <nav>
         <NavLink title="Timer" to="/">

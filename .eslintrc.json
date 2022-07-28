@@ -1,3 +1,6 @@
 {
     "extends": "@rocketseat/eslint-config/react"
 }
+
+//npx eslint src --ext .ts,.tsx
+//npx eslint src --ext .ts,.tsxnpx eslint src --ext .ts,.tsx --fix
