@@ -16,12 +16,13 @@ const buttonVariants = {
 export const ButtonContainer = styled.button<ButtonContainerProps>`
     width: 100px;
     height: 40px;
-    color: white;
+    
     margin: 0 2px;
     
 
 
     background-color: ${props => props.theme.primary};
+    color: ${props => props.theme.secundary};
 
     //sempre usar acento grave
     /*${props => {
