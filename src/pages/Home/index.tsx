@@ -16,13 +16,13 @@ export function Home() {
         <FormContainer>
           <label htmlFor="task">Vou trabalhar em:</label>
           <TaskInput
-            list='task-suggestions'
+            list="task-suggestions"
             required
             id="task"
             placeholder="Dê um nome para seu projeto"
           />
 
-          <datalist id='task-suggestions'>
+          <datalist id="task-suggestions">
             <option value="Projeto 11"></option>
             <option value="Projeto 12"></option>
             <option value="Projeto 13"></option>

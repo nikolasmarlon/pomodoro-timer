@@ -1,12 +1,5 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
-export const HistoryContainer = styled.main`
+export const HistoryContainer = styled.main``
 
-
-`
-
-
-export const HistoryList = styled.div`
-
-
-`
+export const HistoryList = styled.div``
