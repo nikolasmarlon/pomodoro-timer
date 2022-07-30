@@ -9,7 +9,7 @@ export function History() {
         <table>
           <thead>
             <tr>
-              <th>Tarefa 1</th>
+              <th>Tarefa</th>
               <th>Duração</th>
               <th>Início</th>
               <th>Status</th>
@@ -17,25 +17,25 @@ export function History() {
           </thead>
           <tbody>
             <tr>
-              <td>Tarefa 2</td>
+              <td>Tarefa 23</td>
               <td>10 Minutos</td>
               <td>Há 1 meses</td>
               <td>Concluído</td>
             </tr>
             <tr>
-              <td>Tarefa 3</td>
+              <td>Tarefa 23</td>
               <td>15 Minutos</td>
               <td>Há 5 meses</td>
               <td>Concluído</td>
             </tr>
             <tr>
-              <td>Tarefa 4</td>
+              <td>Tarefa 41</td>
               <td>90 Minutos</td>
               <td>Há 4 meses</td>
               <td>Interrompido</td>
             </tr>
             <tr>
-              <td>Tarefa 5</td>
+              <td>Tarefa 51</td>
               <td>25 Minutos</td>
               <td>Há 2 meses</td>
               <td>Cancelado</td>
