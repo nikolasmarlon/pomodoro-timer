@@ -34,7 +34,7 @@ type NewCycleFormData = zod.infer<typeof newCycleFormValidationSchema>
 export function Home() {
   // objeto que várias funções para criar o formulário
   // const form = useForm() usar desestruturação para extrair algumas variaveis e funções do retorno do useForm()
-  const { register, handleSubmit, watch } = useForm<NewCycleFormData>({
+  const { register, handleSubmit, watch, reset } = useForm<NewCycleFormData>({
     resolver: zodResolver(newCycleFormValidationSchema),
     defaultValues: {
       task: '',
@@ -44,6 +44,9 @@ export function Home() {
 
   function handleCreateNewCycle(data: NewCycleFormData) {
     console.log(data)
+
+    // função do react-hook-forma volta campos do form para o valor padrão(obs. ele volta para os valores configurados no dafaultValues)
+    reset()
   }
 
   // watch obsevar o campo task - usado para habilitar o botão
