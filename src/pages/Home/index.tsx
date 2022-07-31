@@ -24,11 +24,13 @@ const newCycleFormValidationSchema = zod.object({
     .max(60, 'O tempo não pode ultrapassar 60 minutos'),
 })
 
-interface NewCycleFormData {
-  task: string
-  minutesAmount: number
-}
+//  interface NewCycleFormData {
+//    task: string
+//  minutesAmount: number
+// }
 
+// sempre que for referenciar uma variálvel javaScript dentro do typeScript precisa usar o typeof
+type NewCycleFormData = zod.infer<typeof newCycleFormValidationSchema>
 export function Home() {
   // objeto que várias funções para criar o formulário
   // const form = useForm() usar desestruturação para extrair algumas variaveis e funções do retorno do useForm()
