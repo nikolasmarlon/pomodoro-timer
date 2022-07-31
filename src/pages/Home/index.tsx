@@ -1,6 +1,8 @@
 import { Play } from 'phosphor-react'
 // hooks acoplam funcionalidades a componentes já existentes - começam com prefixo 'use'
 import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as zod from 'zod'
 import {
   CountdownContainer,
   FormContainer,
@@ -14,10 +16,20 @@ import {
 /** Controlled - Lindar com formulários de forma controlled em alguns momentos pode diminuir aporformance (monitorar estado) */
 /** Uncontrolled busca a informação do input somente quando precisarmos dela (monitorar evento) --- usar biblioteca heact-hook-form */
 
+const newCycleFormValidationSchema = zod.object({
+  task: zod.string().min(1, 'Informe a tarefa'),
+  minutesAmount: zod
+    .number()
+    .min(5, 'O tempo não pode ser menor que 5 minutos')
+    .max(60, 'O tempo não pode ultrapassar 60 minutos'),
+})
+
 export function Home() {
   // objeto que várias funções para criar o formulário
   // const form = useForm() usar desestruturação para extrair algumas variaveis e funções do retorno do useForm()
-  const { register, handleSubmit, watch } = useForm()
+  const { register, handleSubmit, watch } = useForm({
+    resolver: zodResolver(newCycleFormValidationSchema),
+  })
 
   function handleCreateNewCycle(data) {
     console.log(data)
