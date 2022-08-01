@@ -12,6 +12,7 @@ import {
   StartCountdownButton,
   TaskInput,
 } from './styles'
+import { useState } from 'react'
 // Formulário Controlled / Uncontrolled
 /** Controlled - Lindar com formulários de forma controlled em alguns momentos pode diminuir aporformance (monitorar estado) */
 /** Uncontrolled busca a informação do input somente quando precisarmos dela (monitorar evento) --- usar biblioteca heact-hook-form */
@@ -31,7 +32,18 @@ const newCycleFormValidationSchema = zod.object({
 
 // sempre que for referenciar uma variálvel javaScript dentro do typeScript precisa usar o typeof
 type NewCycleFormData = zod.infer<typeof newCycleFormValidationSchema>
+
+interface Cycle {
+  id: string
+  task: string
+  minutesAmount: number
+}
+
 export function Home() {
+  // este estado vai armazenar um array de cycle
+  const [cycles, setCycles] = useState<Cycle[]>([])
+  const [activeCycleId, setActiveCycleId] = useState<string | null>(null)
+
   // objeto que várias funções para criar o formulário
   // const form = useForm() usar desestruturação para extrair algumas variaveis e funções do retorno do useForm()
   const { register, handleSubmit, watch, reset } = useForm<NewCycleFormData>({
@@ -43,7 +55,21 @@ export function Home() {
   })
 
   function handleCreateNewCycle(data: NewCycleFormData) {
-    console.log(data)
+    const id = String(new Date().getTime())
+    const newCycle: Cycle = {
+      id,
+      task: data.task,
+      minutesAmount: data.minutesAmount,
+    }
+
+    const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId)
+
+    // adicionar cycle a listagem de cycles
+    /** toda vez que eu estiver alterando um estado, e este novo estado depende
+     *  da informação anterior do estado, é bom setar este valor no formado de arroy function
+     */
+    setCycles((state) => [...state, newCycle])
+    setActiveCycleId(id)
 
     // função do react-hook-forma volta campos do form para o valor padrão(obs. ele volta para os valores configurados no dafaultValues)
     reset()
