@@ -97,8 +97,7 @@ export function Home() {
     reset()
   }
 
-  function handleInterruptCycle() {   
-
+  function handleInterruptCycle() {
     setCycles(
       cycles.map((cycle) => {
         if (cycle.id === activeCycleId) {
