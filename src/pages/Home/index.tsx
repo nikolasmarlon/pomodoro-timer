@@ -44,10 +44,6 @@ export function Home() {
   const [activeCycleId, setActiveCycleId] = useState<string | null>(null)
   const [amountSecondsPassed, setamountSecondsPassed] = useState(0)
 
-
-
-
-
   // objeto que várias funções para criar o formulário
   // const form = useForm() usar desestruturação para extrair algumas variaveis e funções do retorno do useForm()
   const { register, handleSubmit, watch, reset } = useForm<NewCycleFormData>({
@@ -66,15 +62,6 @@ export function Home() {
       minutesAmount: data.minutesAmount,
     }
 
-    const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId)
-
-
-    const totalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0
-    const currentSeconds = activeCycle ? totalSeconds - amountSecondsPassed : 0
-
-    const minutesAmount = Math.floor(currentSeconds / 60)
-    const secondsAmount = currentSeconds % 60
-
     // adicionar cycle a listagem de cycles
     /** toda vez que eu estiver alterando um estado, e este novo estado depende
      *  da informação anterior do estado, é bom setar este valor no formado de arroy function
@@ -85,6 +72,17 @@ export function Home() {
     // função do react-hook-forma volta campos do form para o valor padrão(obs. ele volta para os valores configurados no dafaultValues)
     reset()
   }
+
+  const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId)
+
+  const totalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0
+  const currentSeconds = activeCycle ? totalSeconds - amountSecondsPassed : 0
+
+  const minutesAmount = Math.floor(currentSeconds / 60)
+  const secondsAmount = currentSeconds % 60
+
+  const minutes = String(minutesAmount).padStart(2, '0')
+  const seconds = String(secondsAmount).padStart(2, '0')
 
   // watch obsevar o campo task - usado para habilitar o botão
   const task = watch('task')
@@ -125,11 +123,11 @@ export function Home() {
           <span>minutos.</span>
         </FormContainer>
         <CountdownContainer>
-          <span>0</span>
-          <span>0</span>
+          <span>{minutes[0]}</span>
+          <span>{minutes[1]}</span>
           <Separator>:</Separator>
-          <span>0</span>
-          <span>0</span>
+          <span>{seconds[0]}</span>
+          <span>{seconds[1]}</span>
         </CountdownContainer>
 
         <StartCountdownButton disabled={isSubmitDisabled} type="submit">
