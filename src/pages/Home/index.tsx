@@ -42,6 +42,11 @@ export function Home() {
   // este estado vai armazenar um array de cycle
   const [cycles, setCycles] = useState<Cycle[]>([])
   const [activeCycleId, setActiveCycleId] = useState<string | null>(null)
+  const [amountSecondsPassed, setamountSecondsPassed] = useState(0)
+
+
+
+
 
   // objeto que várias funções para criar o formulário
   // const form = useForm() usar desestruturação para extrair algumas variaveis e funções do retorno do useForm()
@@ -62,6 +67,13 @@ export function Home() {
     }
 
     const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId)
+
+
+    const totalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0
+    const currentSeconds = activeCycle ? totalSeconds - amountSecondsPassed : 0
+
+    const minutesAmount = Math.floor(currentSeconds / 60)
+    const secondsAmount = currentSeconds % 60
 
     // adicionar cycle a listagem de cycles
     /** toda vez que eu estiver alterando um estado, e este novo estado depende
