@@ -16,6 +16,8 @@ import {
   TaskInput,
 } from './styles'
 import { useEffect, useState } from 'react'
+import { NewCycleForm } from './components/NewCycleForm'
+import { Countdown } from './components/Countdown'
 // Formulário Controlled / Uncontrolled
 /** Controlled - Lindar com formulários de forma controlled em alguns momentos pode diminuir aporformance (monitorar estado) */
 /** Uncontrolled busca a informação do input somente quando precisarmos dela (monitorar evento) --- usar biblioteca heact-hook-form */
@@ -152,45 +154,11 @@ export function Home() {
   return (
     <HomeContainer>
       <form onSubmit={handleSubmit(handleCreateNewCycle)} action="">
-        <FormContainer>
-          <label htmlFor="task">Vou trabalhar em:</label>
-          <TaskInput
-            list="task-suggestions"
-            required
-            id="task"
-            placeholder="Dê um nome para seu projeto"
-            disabled={!!activeCycle}
-            {...register('task')}
-          />
+        {/** form container */}
+        <NewCycleForm />
 
-          <datalist id="task-suggestions">
-            <option value="Projeto 11"></option>
-            <option value="Projeto 12"></option>
-            <option value="Projeto 13"></option>
-            <option value="Projeto 14"></option>
-          </datalist>
-
-          <label htmlFor="minutesAmount">durante</label>
-          <MinutesAmountInput
-            required
-            id="minutesAmount"
-            type="number"
-            placeholder="00"
-            step={5}
-            min={1}
-            max={60}
-            disabled={!!activeCycle}
-            {...register('minutesAmount', { valueAsNumber: true })}
-          />
-          <span>minutos.</span>
-        </FormContainer>
-        <CountdownContainer>
-          <span>{minutes[0]}</span>
-          <span>{minutes[1]}</span>
-          <Separator>:</Separator>
-          <span>{seconds[0]}</span>
-          <span>{seconds[1]}</span>
-        </CountdownContainer>
+        {/** Countdown */}
+        <Countdown />
 
         {activeCycle ? (
           <StopCountdownButton onClick={handleInterruptCycle} type="button">
