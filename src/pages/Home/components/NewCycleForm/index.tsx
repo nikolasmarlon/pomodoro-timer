@@ -6,7 +6,7 @@ import { useFormContext } from 'react-hook-form'
 export function NewCycleForm() {
   const { activeCycle } = useContext(CyclesContext)
 
-  // react hook form
+  // contexto do próprio react hook form
   const { register } = useFormContext()
 
   return (
