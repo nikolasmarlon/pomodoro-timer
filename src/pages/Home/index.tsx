@@ -1,9 +1,8 @@
 import { HandPalm, Play } from 'phosphor-react'
 // hooks acoplam funcionalidades a componentes já existentes - começam com prefixo 'use'
-import { useForm } from 'react-hook-form'
+import { FormProvider, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as zod from 'zod'
-import { differenceInSeconds } from 'date-fns'
 
 import {
   HomeContainer,
@@ -11,7 +10,7 @@ import {
   StopCountdownButton,
 } from './styles'
 
-import { createContext, useEffect, useState } from 'react'
+import { createContext, useState } from 'react'
 import { NewCycleForm } from './components/NewCycleForm'
 import { Countdown } from './components/Countdown'
 
@@ -32,17 +31,55 @@ interface Cycle {
 interface CyclesContextType {
   activeCycle: Cycle | undefined
   activeCycleId: string | null
+  amountSecondsPassed: number
   markCurrentCyclesAsFinished: () => void
+  setSecondsPassed: (seconds: number) => void
 }
 
 export const CyclesContext = createContext({} as CyclesContextType)
+
+// Formulário Controlled / Uncontrolled
+/** Controlled - Lindar com formulários de forma controlled em alguns momentos pode diminuir aporformance (monitorar estado) */
+/** Uncontrolled busca a informação do input somente quando precisarmos dela (monitorar evento) --- usar biblioteca heact-hook-form */
+const newCycleFormValidationSchema = zod.object({
+  task: zod.string().min(1, 'Informe a tarefa'),
+  minutesAmount: zod
+    .number()
+    .min(1, 'O tempo não pode ser menor que 5 minutos')
+    .max(60, 'O tempo não pode ultrapassar 60 minutos'),
+})
+
+//  interface NewCycleFormData {
+//    task: string
+//  minutesAmount: number
+// }
+
+// sempre que for referenciar uma variálvel javaScript dentro do typeScript precisa usar o typeof
+type NewCycleFormData = zod.infer<typeof newCycleFormValidationSchema>
 
 export function Home() {
   // este estado vai armazenar um array de cycle
   const [cycles, setCycles] = useState<Cycle[]>([])
   const [activeCycleId, setActiveCycleId] = useState<string | null>(null)
+  const [amountSecondsPassed, setAmountSecondsPassed] = useState(0)
+
+  // objeto que várias funções para criar o formulário
+  // const form = useForm() usar desestruturação para extrair algumas variaveis e funções do retorno do useForm()
+  const newCycleForm = useForm<NewCycleFormData>({
+    resolver: zodResolver(newCycleFormValidationSchema),
+    defaultValues: {
+      task: '',
+      minutesAmount: 0,
+    },
+  })
+
+  const { handleSubmit, watch, reset } = newCycleForm
 
   const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId)
+
+  function setSecondsPassed(seconds: number) {
+    setAmountSecondsPassed(seconds)
+  }
 
   function markCurrentCyclesAsFinished() {
     setCycles((state) =>
@@ -99,10 +136,18 @@ export function Home() {
     <HomeContainer>
       <form onSubmit={handleSubmit(handleCreateNewCycle)} action="">
         <CyclesContext.Provider
-          value={{ activeCycle, activeCycleId, markCurrentCyclesAsFinished }}
+          value={{
+            activeCycle,
+            activeCycleId,
+            markCurrentCyclesAsFinished,
+            amountSecondsPassed,
+            setSecondsPassed,
+          }}
         >
-          {/** form container */}
-          <NewCycleForm />
+          <FormProvider {...newCycleForm}>
+            {/** form container */}
+            <NewCycleForm />
+          </FormProvider>
 
           {/** Countdown */}
           <Countdown />
