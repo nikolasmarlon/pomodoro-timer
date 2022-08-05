@@ -55,6 +55,11 @@ export function Home() {
 
   const { handleSubmit, watch, reset } = newCycleForm
 
+  function handleCreateNewCycle(data: NewCycleFormData){
+    createNewCycle(data)
+    reset()
+  }
+
   // watch obsevar o campo task - usado para habilitar o botão
   const task = watch('task')
   // variavel auxiliar para o botão(melhorar entendimento da funcionalidade)
@@ -62,7 +67,7 @@ export function Home() {
 
   return (
     <HomeContainer>
-      <form onSubmit={handleSubmit(createNewCycle)} action="">
+      <form onSubmit={handleSubmit(handleCreateNewCycle)} action="">
         <FormProvider {...newCycleForm}>
           {/** form container */}
           <NewCycleForm />

@@ -15,7 +15,7 @@ interface Cycle {
 }
 
 interface CyclesContextType {
-  cycles: Cycles[]
+  cycles: Cycle[]
   activeCycle: Cycle | undefined
   activeCycleId: string | null
   amountSecondsPassed: number
@@ -74,8 +74,7 @@ export function CyclesContextProvider({
     setActiveCycleId(id)
     setAmountSecondsPassed(0)
 
-    // função do react-hook-forma volta campos do form para o valor padrão(obs. ele volta para os valores configurados no dafaultValues)
-    reset()
+    
   }
 
   function interruptCurrentCycle() {
