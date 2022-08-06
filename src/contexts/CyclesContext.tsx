@@ -49,7 +49,7 @@ export function CyclesContextProvider({
         return {
           ...state,
           cycles: [...state.cycles, action.payload.newCycle],
-          activecycleId: action.payload.newCycle.id,
+          activeCycleId: action.payload.newCycle.id,
         }
       }
 
@@ -67,19 +67,23 @@ export function CyclesContextProvider({
         }
       }
 
-      if ( action.type === 'MARK_CURRENT_CYCLE_AS_FINISHED' ) {
+      if (action.type === 'MARK_CURRENT_CYCLE_AS_FINISHED') {
         return {
           ...state,
-          cycles: state.cycles.map(cycle => {
-            if (cycle.id === state.activeCycleId){
+          cycles: state.cycles.map((cycle) => {
+            if (cycle.id === state.activeCycleId) {
               return { ...cycle, finishedDate: new Date() }
             } else {
               return cycle
             }
           }),
-          activecycleId: null
+          activeCycleId: null,
         }
       }
+
+      console.log('fgasdf')
+      console.log(state)
+      console.log(action)
 
       return state
     },
@@ -90,10 +94,9 @@ export function CyclesContextProvider({
   ) // useReducer recebe dois parâmetros
   // Fim useReducer
 
-  
-  const { cycles, activeCycleId } = cyclesState
-  
   const [amountSecondsPassed, setAmountSecondsPassed] = useState(0)
+
+  const { cycles, activeCycleId } = cyclesState
 
   const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId)
 
@@ -122,7 +125,7 @@ export function CyclesContextProvider({
 
   function createNewCycle(data: CreateCycleData) {
     const id = String(new Date().getTime())
-    
+
     const newCycle: Cycle = {
       id,
       task: data.task,
