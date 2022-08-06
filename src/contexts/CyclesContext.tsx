@@ -31,6 +31,11 @@ interface CyclesContextProviderProps {
   children: ReactNode
 }
 
+interface CyclesState {
+  cycles: Cycle[]
+  activeCycleId: string | null
+}
+
 export function CyclesContextProvider({
   children,
 }: CyclesContextProviderProps) {
@@ -38,17 +43,42 @@ export function CyclesContextProvider({
   // const [cycles, setCycles] = useState<Cycle[]>([])
 
   // useReducer
-  const [cycles, dispatch] = useReducer((state: Cycle[], action: any) => {
-    if (action.type === 'ADD_NEW_CYCLE') {
-      return [...state, action.payload.newCycle]
-    }
+  const [cyclesState, dispatch] = useReducer(
+    (state: CyclesState, action: any) => {
+      if (action.type === 'ADD_NEW_CYCLE') {
+        return {
+          ...state,
+          cycles: [...state.cycles, action.payload.newCycle],
+          activecycleId: action.payload.newCycle.id,
+        }
+      }
 
-    return state
-  }, []) // useReducer recebe dois parâmetros
+      if (action.type === 'INTERRUPT_CURRENT_CYCLE') {
+        return {
+          ...state,
+          cycles: state.cycles.map((cycle) => {
+            if (cycle.id === state.activeCycleId) {
+              return { ...cycle, interruptedDate: new Date() }
+            } else {
+              return cycle
+            }
+          }),
+          activeCycleId: null,
+        }
+      }
+
+      return state
+    },
+    {
+      cycles: [],
+      activeCycleId: null,
+    },
+  ) // useReducer recebe dois parâmetros
   // Fim useReducer
 
-  const [activeCycleId, setActiveCycleId] = useState<string | null>(null)
   const [amountSecondsPassed, setAmountSecondsPassed] = useState(0)
+
+  const { cycles, activeCycleId } = cyclesState
 
   const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId)
 
@@ -96,7 +126,7 @@ export function CyclesContextProvider({
      *  da informação anterior do estado, é bom setar este valor no formado de arroy function
      */
     // setCycles((state) => [...state, newCycle])
-    setActiveCycleId(id)
+
     setAmountSecondsPassed(0)
   }
 
@@ -116,7 +146,6 @@ export function CyclesContextProvider({
         }
       }),
     ) */
-    setActiveCycleId(null)
   }
 
   return (
