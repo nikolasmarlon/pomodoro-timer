@@ -107,6 +107,7 @@ export function CyclesContextProvider({
 
   function createNewCycle(data: CreateCycleData) {
     const id = String(new Date().getTime())
+    
     const newCycle: Cycle = {
       id,
       task: data.task,
