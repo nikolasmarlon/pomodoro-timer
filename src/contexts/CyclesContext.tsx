@@ -36,8 +36,16 @@ export function CyclesContextProvider({
 }: CyclesContextProviderProps) {
   // este estado vai armazenar um array de cycle
   // const [cycles, setCycles] = useState<Cycle[]>([])
-  const [cycles, setCycles] = useReducer((state, action) => {}, []) // useReducer recebe dois parâmetros
 
+  // useReducer
+  const [cycles, dispatch] = useReducer((state: Cycle[], action: any) => {
+    if (action.type === 'ADD_NEW_CYCLE') {
+      return [...state, action.payload.newCycle]
+    }
+
+    return state
+  }, []) // useReducer recebe dois parâmetros
+  // Fim useReducer
 
   const [activeCycleId, setActiveCycleId] = useState<string | null>(null)
   const [amountSecondsPassed, setAmountSecondsPassed] = useState(0)
@@ -49,7 +57,14 @@ export function CyclesContextProvider({
   }
 
   function markCurrentCyclesAsFinished() {
-    setCycles((state) =>
+    dispatch({
+      type: 'MARK_CURRENT_CYCLE_AS_FINISHED',
+      payload: {
+        activeCycleId,
+      },
+    })
+
+    /** setCycles((state) =>
       state.map((cycle) => {
         if (cycle.id === activeCycleId) {
           return { ...cycle, finishedDate: new Date() }
@@ -57,7 +72,7 @@ export function CyclesContextProvider({
           return cycle
         }
       }),
-    )
+    ) */
   }
 
   function createNewCycle(data: CreateCycleData) {
@@ -69,17 +84,30 @@ export function CyclesContextProvider({
       startDate: new Date(),
     }
 
+    dispatch({
+      type: 'ADD_NEW_CYCLE',
+      payload: {
+        newCycle,
+      },
+    })
+
     // adicionar cycle a listagem de cycles
     /** toda vez que eu estiver alterando um estado, e este novo estado depende
      *  da informação anterior do estado, é bom setar este valor no formado de arroy function
      */
-    setCycles((state) => [...state, newCycle])
+    // setCycles((state) => [...state, newCycle])
     setActiveCycleId(id)
     setAmountSecondsPassed(0)
   }
 
   function interruptCurrentCycle() {
-    setCycles((state) =>
+    dispatch({
+      type: 'INTERRUPT_CURRENT_CYCLE',
+      payload: {
+        activeCycleId,
+      },
+    })
+    /**  setCycles((state) =>
       state.map((cycle) => {
         if (cycle.id === activeCycleId) {
           return { ...cycle, interruptedDate: new Date() }
@@ -87,7 +115,7 @@ export function CyclesContextProvider({
           return cycle
         }
       }),
-    )
+    ) */
     setActiveCycleId(null)
   }
 
