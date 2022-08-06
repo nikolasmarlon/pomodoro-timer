@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useState } from 'react'
+import { createContext, ReactNode, useState, useReducer } from 'react'
 
 interface CreateCycleData {
   task: string
@@ -35,7 +35,10 @@ export function CyclesContextProvider({
   children,
 }: CyclesContextProviderProps) {
   // este estado vai armazenar um array de cycle
-  const [cycles, setCycles] = useState<Cycle[]>([])
+  // const [cycles, setCycles] = useState<Cycle[]>([])
+  const [cycles, setCycles] = useReducer((state, action) => {}, []) // useReducer recebe dois parâmetros
+
+
   const [activeCycleId, setActiveCycleId] = useState<string | null>(null)
   const [amountSecondsPassed, setAmountSecondsPassed] = useState(0)
 
