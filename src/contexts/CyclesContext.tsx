@@ -67,6 +67,20 @@ export function CyclesContextProvider({
         }
       }
 
+      if ( action.type === 'MARK_CURRENT_CYCLE_AS_FINISHED' ) {
+        return {
+          ...state,
+          cycles: state.cycles.map(cycle => {
+            if (cycle.id === state.activeCycleId){
+              return { ...cycle, finishedDate: new Date() }
+            } else {
+              return cycle
+            }
+          }),
+          activecycleId: null
+        }
+      }
+
       return state
     },
     {
@@ -76,9 +90,10 @@ export function CyclesContextProvider({
   ) // useReducer recebe dois parâmetros
   // Fim useReducer
 
-  const [amountSecondsPassed, setAmountSecondsPassed] = useState(0)
-
+  
   const { cycles, activeCycleId } = cyclesState
+  
+  const [amountSecondsPassed, setAmountSecondsPassed] = useState(0)
 
   const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId)
 
