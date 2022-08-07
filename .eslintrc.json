@@ -1,9 +1,11 @@
 {
     "extends": "@rocketseat/eslint-config/react",
-    "rules": {
-        "no-unused-vars": "off"
-    }
+    
 }
 
 //npx eslint src --ext .ts,.tsx
 //npx eslint src --ext .ts,.tsxnpx eslint src --ext .ts,.tsx --fix
+
+//"rules": {
+//    "no-unused-vars": "off"
+//}
