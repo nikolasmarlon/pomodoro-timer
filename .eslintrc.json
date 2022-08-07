@@ -1,10 +1,6 @@
 {
-<<<<<<< HEAD
     "extends": "@rocketseat/eslint-config/react",
     
-=======
-    "extends": "@rocketseat/eslint-config/react"
->>>>>>> parent of 3529825 (separando action Types)
 }
 
 //npx eslint src --ext .ts,.tsx
