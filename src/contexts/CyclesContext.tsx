@@ -53,6 +53,12 @@ export function CyclesContextProvider({
       if (storedStateAsJSON) {
         return JSON.parse(storedStateAsJSON)
       }
+      //correção do erro Cannot destructure property 'cycles' of 'cyclesState' as ..
+      //causado pelo  storege do navegador estar vazio 
+      return{
+        cycles: [],
+        activeCycleId: null
+      }
     },
   )
 
