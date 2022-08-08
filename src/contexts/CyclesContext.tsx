@@ -1,4 +1,11 @@
-import { createContext, ReactNode, useState, useReducer, useEffect } from 'react'
+import { differenceInSeconds } from 'date-fns'
+import {
+  createContext,
+  ReactNode,
+  useEffect,
+  useReducer,
+  useState,
+} from 'react'
 import {
   ActionTypes,
   addNewCycleAction,
@@ -17,7 +24,7 @@ interface CyclesContextType {
   activeCycle: Cycle | undefined
   activeCycleId: string | null
   amountSecondsPassed: number
-  markCurrentCyclesAsFinished: () => void
+  markCurrentCycleAsFinished: () => void
   setSecondsPassed: (seconds: number) => void
   createNewCycle: (data: CreateCycleData) => void
   interruptCurrentCycle: () => void
@@ -32,50 +39,46 @@ interface CyclesContextProviderProps {
 export function CyclesContextProvider({
   children,
 }: CyclesContextProviderProps) {
-  // este estado vai armazenar um array de cycle
-  // const [cycles, setCycles] = useState<Cycle[]>([])
+  const [cyclesState, dispatch] = useReducer(
+    cyclesReducer,
+    {
+      cycles: [],
+      activeCycleId: null,
+    },
+    () => {
+      const storedStateAsJSON = localStorage.getItem(
+        '@ignite-timer:cycles-state-1.0.0',
+      )
 
-  // useReducer
-  const [cyclesState, dispatch] = useReducer(cyclesReducer, {
-    cycles: [],
-    activeCycleId: null,
-  }, ()=>{
-    const storageStateAsJSON = localStorage.getItem('@ignite-timer:cycles-state-1-0-0')
+      if (storedStateAsJSON) {
+        return JSON.parse(storedStateAsJSON)
+      }
+    },
+  )
 
-    if (storageStateAsJSON){
-      return JSON.parse(storageStateAsJSON)
+  const { cycles, activeCycleId } = cyclesState
+  const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId)
+
+  const [amountSecondsPassed, setAmountSecondsPassed] = useState(() => {
+    if (activeCycle) {
+      return differenceInSeconds(new Date(), new Date(activeCycle.startDate))
     }
-  }) // useReducer recebe dois parâmetros
-  // Fim useReducer
 
-  const [amountSecondsPassed, setAmountSecondsPassed] = useState(0)
+    return 0
+  })
 
   useEffect(() => {
     const stateJSON = JSON.stringify(cyclesState)
 
-    localStorage.setItem('@ignite-timer:cycles-state-1-0-0', stateJSON)
+    localStorage.setItem('@ignite-timer:cycles-state-1.0.0', stateJSON)
   }, [cyclesState])
-
-  const { cycles, activeCycleId } = cyclesState
-
-  const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId)
 
   function setSecondsPassed(seconds: number) {
     setAmountSecondsPassed(seconds)
   }
 
-  function markCurrentCyclesAsFinished() {
-    dispatch(markCurrentCycleAsFinishedAction)
-
-    /** setCycles((state) =>
-      state.map((cycle) => {
-        if (cycle.id === activeCycleId) {
-          return { ...cycle, finishedDate: new Date() }
-        } else {
-          return cycle
-        }
-      }),
-    ) */
+  function markCurrentCycleAsFinished() {
+    dispatch(markCurrentCycleAsFinishedAction())
   }
 
   function createNewCycle(data: CreateCycleData) {
@@ -90,26 +93,11 @@ export function CyclesContextProvider({
 
     dispatch(addNewCycleAction(newCycle))
 
-    // adicionar cycle a listagem de cycles
-    /** toda vez que eu estiver alterando um estado, e este novo estado depende
-     *  da informação anterior do estado, é bom setar este valor no formado de arroy function
-     */
-    // setCycles((state) => [...state, newCycle])
-
     setAmountSecondsPassed(0)
   }
 
   function interruptCurrentCycle() {
-    dispatch(interruptCurrentCycleAction)
-    /**  setCycles((state) =>
-      state.map((cycle) => {aQASA
-        if (cycle.id === activeCycleId) {
-          return { ...cycle, interruptedDate: new Date() }
-        } else {
-          return cycle
-        }
-      }),
-    ) */
+    dispatch(interruptCurrentCycleAction())
   }
 
   return (
@@ -118,7 +106,7 @@ export function CyclesContextProvider({
         cycles,
         activeCycle,
         activeCycleId,
-        markCurrentCyclesAsFinished,
+        markCurrentCycleAsFinished,
         amountSecondsPassed,
         setSecondsPassed,
         createNewCycle,
